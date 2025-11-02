@@ -462,32 +462,34 @@ export default function MessageInput({ placeholder, onSubmit, onTyping, getAuthH
               }}
             />
             
-            {/* UploadThing button (hidden) */}
-            <UploadButton<OurFileRouter, "fileUploader">
-              endpoint="fileUploader"
-              onClientUploadComplete={(res: any) => {
-                console.log('📎 UploadThing upload complete:', res)
-                if (res && res[0]) {
-                  console.log('📎 File uploaded:', res[0].url, res[0].name)
-                  const fileContent = message.trim() || `📎 ${res[0].name}`
-                  onSubmit(fileContent, res[0].url, res[0].name)
-                  setMessage('')
-                  if (textareaRef.current) {
-                    textareaRef.current.style.height = 'auto'
+            {/* UploadThing button (hidden - using content prop to avoid nested button) */}
+            <div className="hidden">
+              <UploadButton<OurFileRouter, "fileUploader">
+                endpoint="fileUploader"
+                onClientUploadComplete={(res: any) => {
+                  console.log('📎 UploadThing upload complete:', res)
+                  if (res && res[0]) {
+                    console.log('📎 File uploaded:', res[0].url, res[0].name)
+                    const fileContent = message.trim() || `📎 ${res[0].name}`
+                    onSubmit(fileContent, res[0].url, res[0].name)
+                    setMessage('')
+                    if (textareaRef.current) {
+                      textareaRef.current.style.height = 'auto'
+                    }
                   }
-                }
-              }}
-              onUploadError={(error: Error) => {
-                console.error('❌ UploadThing error:', error)
-                // Fallback to native file input
-                console.log('Falling back to native file input...')
-                fileInputRef.current?.click()
-              }}
-              onUploadBegin={(name: string) => {
-                console.log('📎 Upload starting:', name)
-              }}
-              className="hidden"
-            />
+                }}
+                onUploadError={(error: Error) => {
+                  console.error('❌ UploadThing error:', error)
+                  // Fallback to native file input
+                  console.log('Falling back to native file input...')
+                  fileInputRef.current?.click()
+                }}
+                onUploadBegin={(name: string) => {
+                  console.log('📎 Upload starting:', name)
+                }}
+                content={({ ready }) => <span style={{ display: 'none' }} />}
+              />
+            </div>
             
             <button
               type="button"
