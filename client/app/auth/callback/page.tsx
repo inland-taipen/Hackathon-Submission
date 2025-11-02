@@ -5,6 +5,9 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import axios from 'axios'
 import { config } from '@/lib/config'
 
+// Force dynamic rendering - this page can't be pre-rendered
+export const dynamic = 'force-dynamic'
+
 export default function AuthCallback() {
   const router = useRouter()
   const searchParams = useSearchParams()
