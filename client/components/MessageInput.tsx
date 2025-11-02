@@ -462,8 +462,8 @@ export default function MessageInput({ placeholder, onSubmit, onTyping, getAuthH
               }}
             />
             
-            {/* UploadThing button (hidden - using content prop to avoid nested button) */}
-            <div className="hidden">
+            {/* UploadThing button (hidden - wrapped in div to prevent button nesting) */}
+            <div className="hidden" style={{ position: 'absolute', visibility: 'hidden' }}>
               <UploadButton<OurFileRouter, "fileUploader">
                 endpoint="fileUploader"
                 onClientUploadComplete={(res: any) => {
@@ -487,7 +487,6 @@ export default function MessageInput({ placeholder, onSubmit, onTyping, getAuthH
                 onUploadBegin={(name: string) => {
                   console.log('📎 Upload starting:', name)
                 }}
-                content={({ ready }) => <span style={{ display: 'none' }} />}
               />
             </div>
             
