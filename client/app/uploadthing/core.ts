@@ -9,9 +9,9 @@ export const ourFileRouter = {
     video: { maxFileSize: "64MB", maxFileCount: 1 },
   })
     .onUploadComplete(async ({ metadata, file }) => {
-      console.log("Upload complete for userId:", metadata?.userId);
+      console.log("Upload complete for userId:", (metadata as any)?.userId);
       console.log("file url", file.url);
-      return { uploadedBy: metadata?.userId };
+      return { uploadedBy: (metadata as any)?.userId };
     }),
 } satisfies FileRouter;
 

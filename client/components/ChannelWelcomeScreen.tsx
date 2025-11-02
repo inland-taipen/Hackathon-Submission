@@ -1,8 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { config } from '@/lib/config'import axios from 'axios'
-import { config } from '@/lib/config'import { Users, Briefcase, Globe, Phone } from 'lucide-react'
+import axios from 'axios'
+import { Users, Briefcase, Globe, Phone } from 'lucide-react'
 import { config } from '@/lib/config'
 interface ChannelWelcomeScreenProps {
   channelName: string

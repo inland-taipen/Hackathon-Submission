@@ -34,10 +34,10 @@ export default function AuthCallback() {
       try {
         let response
         if (provider === 'google') {
-          response = await axios.post(`${config.apiUrl}/api/auth/google/callback', { code, state })
+          response = await axios.post(`${config.apiUrl}/api/auth/google/callback`, { code, state })
         } else {
           // Default to GitHub
-          response = await axios.post(`${config.apiUrl}/api/auth/github/callback', { code, state })
+          response = await axios.post(`${config.apiUrl}/api/auth/github/callback`, { code, state })
         }
 
         // Clear OAuth state

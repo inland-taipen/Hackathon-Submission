@@ -1,8 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { config } from '@/lib/config'import { Hash, User, FileText, Heart, Reply } from 'lucide-react'
-import { config } from '@/lib/config'import axios from 'axios'
+import { Hash, User, FileText, Heart, Reply } from 'lucide-react'
+import axios from 'axios'
 import { config } from '@/lib/config'
 interface Activity {
   id: string

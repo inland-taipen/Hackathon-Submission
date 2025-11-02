@@ -21,7 +21,7 @@ interface MessageListProps {
   currentUserId: string
   onThreadClick: (messageId: string) => void
   onReactionClick: (messageId: string, emoji: string) => void
-  reactions: Record<string, any[]>
+  reactions: Record<string, Record<string, any[]>>
 }
 
 export default function MessageList({

@@ -1,8 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { config } from '@/lib/config'import { FileText, Download, Image, File, Video, Music, Archive, Search } from 'lucide-react'
-import { config } from '@/lib/config'import axios from 'axios'
+import { FileText, Download, Image, File, Video, Music, Archive, Search } from 'lucide-react'
+import axios from 'axios'
 import { config } from '@/lib/config'
 interface FileItem {
   id: string
