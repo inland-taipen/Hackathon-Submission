@@ -1,0 +1,76 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+
+# Environment variables (IMPORTANT - Contains secrets!)
+.env
+.env.local
+.env.*.local
+server/.env
+client/.env
+
+# Database files (Contains user data!)
+*.sqlite
+*.db
+database.sqlite
+server/database.sqlite
+
+# Uploaded files (May contain user content!)
+uploads/
+server/uploads/
+client/uploads/
+
+# Build outputs
+.next/
+out/
+dist/
+build/
+
+# IDE & Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.swn
+.DS_Store
+*.code-workspace
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Testing
+coverage/
+.nyc_output/
+*.test.local
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Python (for RL environment)
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+ENV/
+.venv
+*.egg-info/
+dist/
+build/
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Personal notes (if any)
+TODO.txt
+NOTES.txt
+scratch/

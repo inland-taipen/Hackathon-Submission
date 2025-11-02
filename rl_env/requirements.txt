@@ -1,0 +1,35 @@
+# RL Environment Requirements
+# Install with: pip install -r requirements.txt
+
+# Core RL (using gymnasium - modern fork of gym)
+gymnasium>=0.29.0
+numpy>=1.23.0
+
+# Deep RL frameworks (optional - choose based on your preference)
+# stable-baselines3>=1.7.0    # Easy-to-use RL algorithms (requires torch - commented out due to ARM compatibility)
+# torch>=2.0.0                # PyTorch for neural networks (crashes on macOS ARM - commented out)
+# tensorflow>=2.13.0        # TensorFlow (optional, commented out for faster install)
+
+# Communication with Slack backend
+requests==2.31.0
+python-socketio[client]==5.9.0
+websocket-client==1.6.1
+
+# NLP and embeddings (optional - commented out for faster install)
+# transformers>=4.30.0      # Hugging Face transformers
+# sentence-transformers>=2.2.0  # Better text embeddings
+# spacy>=3.5.0              # NLP processing
+
+# Utilities (optional - commented out for minimal install)
+# pandas>=2.0.0
+# matplotlib>=3.7.0
+# seaborn>=0.12.0
+tqdm>=4.65.0
+
+# Logging and monitoring (optional)
+# tensorboard>=2.13.0
+# wandb>=0.15.0             # Weights & Biases for experiment tracking
+
+# Testing (optional)
+# pytest>=7.4.0
+
