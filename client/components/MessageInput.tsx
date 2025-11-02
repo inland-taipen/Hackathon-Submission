@@ -5,6 +5,7 @@ import { Bold, Italic, Underline, Link, List, Code, Smile, AtSign, Paperclip, Se
 import { UploadButton } from '@uploadthing/react'
 import type { OurFileRouter } from '@/app/uploadthing/core'
 import axios from 'axios'
+import { config } from '@/lib/config'
 
 interface MessageInputProps {
   placeholder: string
@@ -55,7 +56,7 @@ export default function MessageInput({ placeholder, onSubmit, onTyping, getAuthH
       
       // Upload file using axios
       const response = await axios.post(
-        'http://localhost:3001/api/messages/upload-file',
+        `${config.apiUrl}/api/messages/upload-file`,
         fileBuffer,
         {
           headers: headers,

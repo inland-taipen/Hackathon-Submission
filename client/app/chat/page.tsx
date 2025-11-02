@@ -17,6 +17,7 @@ import CanvasTab from '@/components/CanvasTab'
 import InviteTeammatesModal from '@/components/InviteTeammatesModal'
 import ActivityView from '@/components/ActivityView'
 import FilesView from '@/components/FilesView'
+import { config } from '@/lib/config'
 
 interface User {
   id: string
@@ -129,7 +130,7 @@ export default function ChatPage() {
     }
 
     // Initialize socket connection
-    const newSocket = io('http://localhost:3001', {
+    const newSocket = io(config.apiUrl, {
       auth: { sessionId },
       transports: ['websocket', 'polling'], // Use both transports for better reliability
       upgrade: true,
@@ -138,7 +139,7 @@ export default function ChatPage() {
     setSocket(newSocket)
 
     // Verify session
-    axios.get('http://localhost:3001/api/auth/me', { headers: getAuthHeaders() })
+    axios.get(`${config.apiUrl}/api/auth/me`, { headers: getAuthHeaders() })
       .then(res => {
         console.log('Session verified:', res.data)
         setUser(res.data.user)
@@ -152,7 +153,7 @@ export default function ChatPage() {
       })
 
     // Fetch workspaces
-    axios.get('http://localhost:3001/api/workspaces', { headers: getAuthHeaders() })
+    axios.get(`${config.apiUrl}/api/workspaces`, { headers: getAuthHeaders() })
       .then(res => {
         setWorkspaces(res.data)
         if (res.data.length > 0) {
@@ -245,7 +246,7 @@ export default function ChatPage() {
   useEffect(() => {
     if (!currentWorkspace || !user) return
 
-    axios.get(`http://localhost:3001/api/workspaces/${currentWorkspace.id}/presence`, {
+    axios.get(`${config.apiUrl}/api/workspaces/${currentWorkspace.id}/presence`, {
       headers: getAuthHeaders()
     })
       .then(res => {
@@ -271,7 +272,7 @@ export default function ChatPage() {
   useEffect(() => {
     if (!currentWorkspace || !user) return
 
-    axios.get(`http://localhost:3001/api/workspaces/${currentWorkspace.id}/unread-counts`, {
+    axios.get(`${config.apiUrl}/api/workspaces/${currentWorkspace.id}/unread-counts`, {
       headers: getAuthHeaders()
     })
       .then(res => {
@@ -287,7 +288,7 @@ export default function ChatPage() {
   // Mark channel as read when viewing it
   useEffect(() => {
     if (selectedView === 'channel' && selectedId) {
-      axios.post(`http://localhost:3001/api/channels/${selectedId}/mark-read`, {}, {
+      axios.post(`${config.apiUrl}/api/channels/${selectedId}/mark-read`, {}, {
         headers: getAuthHeaders()
       })
         .then(() => {
@@ -300,7 +301,7 @@ export default function ChatPage() {
   // Fetch pinned messages when channel changes
   useEffect(() => {
     if (selectedView === 'channel' && selectedId) {
-      axios.get(`http://localhost:3001/api/channels/${selectedId}/pinned`, {
+      axios.get(`${config.apiUrl}/api/channels/${selectedId}/pinned`, {
         headers: getAuthHeaders()
       })
         .then(res => setPinnedMessages(res.data || []))
@@ -324,7 +325,7 @@ export default function ChatPage() {
     if (!currentWorkspace || showOnboarding) return
 
     // Fetch channels
-    axios.get(`http://localhost:3001/api/workspaces/${currentWorkspace.id}/channels`, {
+    axios.get(`${config.apiUrl}/api/workspaces/${currentWorkspace.id}/channels`, {
       headers: getAuthHeaders()
     })
       .then(res => {
@@ -344,7 +345,7 @@ export default function ChatPage() {
       .catch(console.error)
 
     // Fetch available users
-    axios.get('http://localhost:3001/api/users', {
+    axios.get(`${config.apiUrl}/api/users`, {
       params: { workspaceId: currentWorkspace.id },
       headers: getAuthHeaders()
     })
@@ -356,7 +357,7 @@ export default function ChatPage() {
     if (showOnboarding) return
     
     // Fetch DM conversations
-    axios.get('http://localhost:3001/api/dm-conversations', {
+    axios.get(`${config.apiUrl}/api/dm-conversations`, {
       headers: getAuthHeaders()
     })
       .then(res => setDMConversations(res.data))
@@ -375,15 +376,15 @@ export default function ChatPage() {
 
     // Fetch messages
     const endpoint = selectedView === 'channel'
-      ? `http://localhost:3001/api/channels/${selectedId}/messages`
-      : `http://localhost:3001/api/dm-conversations/${selectedId}/messages`
+      ? `${config.apiUrl}/api/channels/${selectedId}/messages`
+      : `${config.apiUrl}/api/dm-conversations/${selectedId}/messages`
 
     axios.get(endpoint, { headers: getAuthHeaders() })
       .then(res => {
         setMessages(res.data)
         // Load reactions for all messages
         Promise.all(res.data.map((msg: Message) =>
-          axios.get(`http://localhost:3001/api/messages/${msg.id}/reactions`, {
+          axios.get(`${config.apiUrl}/api/messages/${msg.id}/reactions`, {
             headers: getAuthHeaders()
           }).then(reactionRes => ({ messageId: msg.id, reactions: reactionRes.data }))
             .catch(() => ({ messageId: msg.id, reactions: {} }))
@@ -529,7 +530,7 @@ export default function ChatPage() {
 
     try {
       const res = await axios.post(
-        `http://localhost:3001/api/workspaces/${currentWorkspace.id}/channels`,
+        `${config.apiUrl}/api/workspaces/${currentWorkspace.id}/channels`,
         { name, description, isPrivate, memberIds: memberIds || [] },
         { headers: getAuthHeaders() }
       )
@@ -547,7 +548,7 @@ export default function ChatPage() {
   const handleStartDM = async (userId: string) => {
     try {
       const res = await axios.post(
-        'http://localhost:3001/api/dm-conversations',
+        `${config.apiUrl}/api/dm-conversations`,
         { userId },
         { headers: getAuthHeaders() }
       )
@@ -578,7 +579,7 @@ export default function ChatPage() {
 
     try {
       const res = await axios.get(
-        `http://localhost:3001/api/messages/${messageId}/threads`,
+        `${config.apiUrl}/api/messages/${messageId}/threads`,
         { headers: getAuthHeaders() }
       )
       setThreadMessages(prev => ({ ...prev, [messageId]: res.data }))
@@ -591,13 +592,13 @@ export default function ChatPage() {
   const handleReactionClick = async (messageId: string, emoji: string) => {
     try {
       await axios.post(
-        `http://localhost:3001/api/messages/${messageId}/reactions`,
+        `${config.apiUrl}/api/messages/${messageId}/reactions`,
         { emoji },
         { headers: getAuthHeaders() }
       )
       // Refetch reactions
       const res = await axios.get(
-        `http://localhost:3001/api/messages/${messageId}/reactions`,
+        `${config.apiUrl}/api/messages/${messageId}/reactions`,
         { headers: getAuthHeaders() }
       )
       setReactions(prev => ({ ...prev, [messageId]: res.data }))
@@ -633,7 +634,7 @@ export default function ChatPage() {
       // Create default channel
       console.log('Creating default channel...')
       const channelRes = await axios.post(
-        `http://localhost:3001/api/workspaces/${res.data.id}/channels`,
+        `${config.apiUrl}/api/workspaces/${res.data.id}/channels`,
         { name: 'general', isPrivate: false },
         { headers: getAuthHeaders() }
       )
@@ -662,7 +663,7 @@ export default function ChatPage() {
   const handleAddWorkspace = async (name: string, slug: string) => {
     try {
       const res = await axios.post(
-        'http://localhost:3001/api/workspaces',
+        `${config.apiUrl}/api/workspaces`,
         { name, slug },
         { headers: getAuthHeaders() }
       )
@@ -675,7 +676,7 @@ export default function ChatPage() {
       
       // Fetch channels for the new workspace
       const channelsRes = await axios.get(
-        `http://localhost:3001/api/workspaces/${res.data.id}/channels`,
+        `${config.apiUrl}/api/workspaces/${res.data.id}/channels`,
         { headers: getAuthHeaders() }
       )
       setChannels(channelsRes.data)
@@ -893,7 +894,7 @@ export default function ChatPage() {
                             setTimeout(async () => {
                               try {
                                 const res = await axios.get(
-                                  `http://localhost:3001/api/channels/${currentChannel.id}/messages`,
+                                  `${config.apiUrl}/api/channels/${currentChannel.id}/messages`,
                                   { headers: getAuthHeaders() }
                                 )
                                 setMessages(res.data)
@@ -1023,7 +1024,7 @@ export default function ChatPage() {
           getAuthHeaders={getAuthHeaders}
           onInviteSuccess={() => {
             // Refresh available users list
-            axios.get(`http://localhost:3001/api/users?workspaceId=${currentWorkspace.id}`, {
+            axios.get(`${config.apiUrl}/api/users?workspaceId=${currentWorkspace.id}`, {
               headers: getAuthHeaders()
             }).then(res => {
               setAvailableUsers(res.data || [])

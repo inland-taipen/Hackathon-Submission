@@ -1,9 +1,9 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
-import axios from 'axios'
-
+import { config } from '@/lib/config'import { useRouter, useSearchParams } from 'next/navigation'
+import { config } from '@/lib/config'import axios from 'axios'
+import { config } from '@/lib/config'
 export default function AuthCallback() {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -33,10 +33,10 @@ export default function AuthCallback() {
       try {
         let response
         if (provider === 'google') {
-          response = await axios.post('http://localhost:3001/api/auth/google/callback', { code, state })
+          response = await axios.post(`${config.apiUrl}/api/auth/google/callback', { code, state })
         } else {
           // Default to GitHub
-          response = await axios.post('http://localhost:3001/api/auth/github/callback', { code, state })
+          response = await axios.post(`${config.apiUrl}/api/auth/github/callback', { code, state })
         }
 
         // Clear OAuth state

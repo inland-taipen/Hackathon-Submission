@@ -1,9 +1,9 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { X, Search, Mail, UserPlus } from 'lucide-react'
-import axios from 'axios'
-
+import { config } from '@/lib/config'import { X, Search, Mail, UserPlus } from 'lucide-react'
+import { config } from '@/lib/config'import axios from 'axios'
+import { config } from '@/lib/config'
 interface User {
   id: string
   username: string

@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import axios from 'axios'
+import { config } from '@/lib/config'
 
 export default function Home() {
   const [email, setEmail] = useState('')
@@ -18,7 +19,7 @@ export default function Home() {
 
     try {
       console.log('Attempting login...', { email })
-      const response = await axios.post('http://localhost:3001/api/auth/login', {
+      const response = await axios.post(`${config.apiUrl}/api/auth/login`, {
         email,
         password
       })
@@ -51,7 +52,7 @@ export default function Home() {
 
   const handleGitHubLogin = async () => {
     try {
-      const response = await axios.get('http://localhost:3001/api/auth/github')
+      const response = await axios.get(`${config.apiUrl}/api/auth/github`)
       // Store state in sessionStorage to verify on callback
       if (response.data.state) {
         sessionStorage.setItem('oauth_state', response.data.state)
@@ -65,7 +66,7 @@ export default function Home() {
 
   const handleGoogleLogin = async () => {
     try {
-      const response = await axios.get('http://localhost:3001/api/auth/google')
+      const response = await axios.get(`${config.apiUrl}/api/auth/google`)
       // Store state in sessionStorage to verify on callback
       if (response.data.state) {
         sessionStorage.setItem('oauth_state', response.data.state)

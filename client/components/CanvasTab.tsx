@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Plus } from 'lucide-react'
 import axios from 'axios'
+import { config } from '@/lib/config'
 
 interface CanvasTabProps {
   channelName: string
@@ -17,7 +18,7 @@ export default function CanvasTab({ channelName, channelId, getAuthHeaders }: Ca
   useEffect(() => {
     // Check if canvas exists
     axios.get(
-      `http://localhost:3001/api/channels/${channelId}/canvas`,
+      `${config.apiUrl}/api/channels/${channelId}/canvas`,
       { headers: getAuthHeaders() }
     )
       .then(res => {
@@ -34,7 +35,7 @@ export default function CanvasTab({ channelName, channelId, getAuthHeaders }: Ca
     setIsCreating(true)
     try {
       await axios.post(
-        `http://localhost:3001/api/channels/${channelId}/canvas`,
+        `${config.apiUrl}/api/channels/${channelId}/canvas`,
         { title: 'Untitled Canvas', content: '' },
         { headers: getAuthHeaders() }
       )

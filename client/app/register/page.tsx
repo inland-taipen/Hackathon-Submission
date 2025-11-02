@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import axios from 'axios'
+import { config } from '@/lib/config'
 
 export default function RegisterPage() {
   const [username, setUsername] = useState('')
@@ -19,7 +20,7 @@ export default function RegisterPage() {
 
     try {
       console.log('Attempting registration...', { username, email })
-      const response = await axios.post('http://localhost:3001/api/auth/register', {
+      const response = await axios.post(`${config.apiUrl}/api/auth/register`, {
         username,
         email,
         password
@@ -155,7 +156,7 @@ export default function RegisterPage() {
           <button
             onClick={async () => {
               try {
-                const response = await axios.get('http://localhost:3001/api/auth/google')
+                const response = await axios.get(`${config.apiUrl}/api/auth/google`)
                 // Store state in sessionStorage to verify on callback
                 if (response.data.state) {
                   sessionStorage.setItem('oauth_state', response.data.state)
