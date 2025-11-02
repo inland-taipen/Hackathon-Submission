@@ -1,9 +1,10 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { config } from '@/lib/config'import { useRouter, useSearchParams } from 'next/navigation'
-import { config } from '@/lib/config'import axios from 'axios'
+import { useRouter, useSearchParams } from 'next/navigation'
+import axios from 'axios'
 import { config } from '@/lib/config'
+
 export default function AuthCallback() {
   const router = useRouter()
   const searchParams = useSearchParams()
