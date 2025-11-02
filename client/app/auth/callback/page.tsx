@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import axios from 'axios'
 import { config } from '@/lib/config'
@@ -8,7 +8,7 @@ import { config } from '@/lib/config'
 // Force dynamic rendering - this page can't be pre-rendered
 export const dynamic = 'force-dynamic'
 
-export default function AuthCallback() {
+function AuthCallbackContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [error, setError] = useState('')
@@ -98,5 +98,20 @@ export default function AuthCallback() {
   }
 
   return null
+}
+
+export default function AuthCallback() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#611f69] mx-auto mb-4"></div>
+          <p className="text-[#616061]">Loading...</p>
+        </div>
+      </div>
+    }>
+      <AuthCallbackContent />
+    </Suspense>
+  )
 }
 
